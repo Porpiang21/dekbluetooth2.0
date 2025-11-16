@@ -5,16 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dekbluetooth linkbio</title>
 
+<!-- ฟอนต์สวยๆ -->
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&display=swap" rel="stylesheet">
+
 <style>
     body {
         margin: 0;
-        font-family: "Prompt", sans-serif;
+        font-family: 'Prompt', sans-serif;
         color: white;
         text-align: center;
-
-        /* พื้นหลังเป็น GIF */
         background: url("https://media1.tenor.com/m/6NxALKivEZ8AAAAd/wallpaper-car.gif") no-repeat center center fixed;
         background-size: cover;
+        overflow-x: hidden;
+    }
+
+    /* เอฟเฟกต์ตอนกดลิงก์ (Fade out) */
+    .page-transition {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%;
+        height: 100%;
+        background: black;
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.7s ease;
+        z-index: 9999;
+    }
+
+    .page-transition.active {
+        opacity: 1;
+        pointer-events: all;
     }
 
     .overlay {
@@ -27,10 +47,21 @@
         backdrop-filter: blur(3px);
     }
 
+    /* แอนิเมชันตอนเข้าเว็บ */
     .container {
         position: relative;
         z-index: 2;
         margin-top: 60px;
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    .container.show {
+        animation: fadeInUp 0.8s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+        to { opacity: 1; transform: translateY(0); }
     }
 
     .avatar {
@@ -40,7 +71,19 @@
         border: 4px solid white;
         object-fit: cover;
         animation: float 3s ease-in-out infinite;
+        opacity: 0;
+        transform: translateY(20px);
     }
+
+    .avatar.show { animation: fadeInUp 0.8s ease forwards; animation-delay: 0.2s; }
+
+    h1, p {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    h1.show { animation: fadeInUp 0.8s ease forwards; animation-delay: 0.4s; font-weight: 700; font-size: 2.2rem; }
+    p.show { animation: fadeInUp 0.8s ease forwards; animation-delay: 0.6s; font-weight: 400; font-size: 1.1rem; }
 
     @keyframes float {
         0% { transform: translateY(0px); }
@@ -59,25 +102,33 @@
         font-size: 20px;
         text-decoration: none;
         color: white;
-
         display: flex;
         align-items: center;
         gap: 12px;
-
         cursor: pointer;
         transition: 0.25s ease;
         position: relative;
         overflow: hidden;
+
+        opacity: 0;
+        transform: translateY(20px);
     }
 
-    /* เอฟเฟกต์ hover */
+    .link-box.show { animation: fadeInUp 0.6s ease forwards; }
+
+    /* Staggered Animation */
+    .link-box:nth-of-type(1).show { animation-delay: 0.8s; }
+    .link-box:nth-of-type(2).show { animation-delay: 1s; }
+    .link-box:nth-of-type(3).show { animation-delay: 1.2s; }
+    .link-box:nth-of-type(4).show { animation-delay: 1.4s; }
+    .link-box:nth-of-type(5).show { animation-delay: 1.6s; }
+
     .link-box:hover {
         transform: scale(1.07);
         border-color: #00ffd5;
         box-shadow: 0 0 20px #00ffe1;
     }
 
-    /* เส้นวิ่ง */
     .link-box::before {
         content: "";
         position: absolute;
@@ -89,11 +140,8 @@
         transition: 0.8s;
     }
 
-    .link-box:hover::before {
-        left: 100%;
-    }
+    .link-box:hover::before { left: 100%; }
 
-    /* เอฟเฟกต์คลิก */
     .link-box:active {
         transform: scale(0.93);
         box-shadow: 0 0 25px #00ffe1 inset;
@@ -110,44 +158,72 @@
 
 <body>
 
+<div class="page-transition" id="transition"></div>
 <div class="overlay"></div>
 
-<div class="container">
+<div class="container" id="content">
     <img class="avatar" src="https://bio.linkcdn.cc/upload/2024120713/173357930679716538.jpg" alt="profile">
 
     <h1>เด็กบลูทูธ2.0</h1>
     <p>ลิ้งต่างๆในช่องเด็กบลูทูธ2.0</p>
 
-    <!-- ⭐ ลิ้งโดเนท -->
     <a class="link-box" href="https://easydonate.app/porpiang_21" target="_blank">
         <img class="icon" src="https://media.tenor.com/IN2VD8kIJpAAAAAM/money-anime.gif">
         ลิ้งโดเนท
     </a>
 
-    <!-- ⭐ ลิ้ง Discord -->
     <a class="link-box" href="https://discord.gg/G6ZezMCH" target="_blank">
         <img class="icon" src="https://media.tenor.com/NcNdYO-RP5kAAAAm/discord.webp">
         ลิ้งดิส
     </a>
 
-    <!-- ⭐ เซิฟ Roblox Battlegrounds -->
     <a class="link-box" href="https://www.roblox.com/share?code=4d9b353f56158c4882143c10c3b988f6&type=Server" target="_blank">
         <img class="icon" src="https://bio.linkcdn.cc/upload/2025012510/173780198427380923.png">
         เซิฟ The Strongest Battlegrounds
     </a>
 
-    <!-- ⭐ ช่อง YouTube -->
-    <a class="link-box" href="https://www.youtube.com/@%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%81%E0%B8%9A%E0%B8%A5%E0%B8%B9%E0%B8%97%E0%B8%B9%E0%B8%982.0" target="_blank">
+    <a class="link-box" href="https://www.youtube.com/@%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%81%E0%B8%9A%E0%B8%A5%E0%B8%B9%E0%B8%97%E0%B8%B92.0" target="_blank">
         <img class="icon" src="https://media1.tenor.com/m/q3NBbq09nuYAAAAC/youtube-logo.gif">
         ช่อง YouTube
     </a>
 
-    <!-- ⭐ โปรไฟล์ Roblox -->
     <a class="link-box" href="https://www.roblox.com/users/2465978468/profile" target="_blank">
         <img class="icon" src="https://media.tenor.com/Swa8SUQmbrgAAAAm/roblox-agrument.webp">
         โปรไฟล์ Roblox
     </a>
 </div>
+
+<script>
+    // แอนิเมชันตอนเข้าเว็บ
+    window.addEventListener("DOMContentLoaded", () => {
+        const content = document.getElementById("content");
+        const avatar = document.querySelector(".avatar");
+        const title = document.querySelector("h1");
+        const desc = document.querySelector("p");
+        const boxes = document.querySelectorAll(".link-box");
+
+        content.classList.add("show");
+        avatar.classList.add("show");
+        title.classList.add("show");
+        desc.classList.add("show");
+        boxes.forEach(box => box.classList.add("show"));
+    });
+
+    // แอนิเมชันตอนกดลิงก์
+    const boxes = document.querySelectorAll(".link-box");
+    const transition = document.getElementById("transition");
+    const content = document.getElementById("content");
+
+    boxes.forEach(box => {
+        box.addEventListener("click", function(e) {
+            e.preventDefault();
+            const url = this.href;
+            transition.classList.add("active");
+            content.classList.add("fade");
+            setTimeout(() => { window.open(url, "_blank"); }, 600);
+        });
+    });
+</script>
 
 </body>
 </html>
